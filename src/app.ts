@@ -1,7 +1,7 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
-import { backupScheduleJob, dailyScheduleJob } from "./backup";
+import { backupScheduleJob } from "./backup";
 import { backup } from "./api";
 import { format } from "date-fns";
 import { client, setTime } from "./mqtt";
@@ -54,7 +54,6 @@ client.on("error", (error) => {
 
 httpServer.listen(PORT, async () => {
   backupScheduleJob();
-  dailyScheduleJob();
   await backup();
   await setTime();
   console.log(`Start socket server with port: ${PORT}`);

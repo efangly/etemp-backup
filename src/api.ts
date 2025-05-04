@@ -9,6 +9,7 @@ const backup = async () => {
     console.log(result.data.data);
   } catch (error) {
     console.log(error);
+    axios.post(String(process.env.SLACK_WEBHOOK), { text: `Backup Error: ${error}` });
   }
 }
 
@@ -22,7 +23,17 @@ const getDevice = async (): Promise<TDevice[]> => {
   }
 }
 
+const sendSchedule = async (devSerial: string, detail: string) => {
+  try {
+    const result = await axios.post(`${process.env.SERVER_API}/notification`, { devSerial: devSerial, notiDetail: detail });
+    return result.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export {
   backup,
-  getDevice
+  getDevice,
+  sendSchedule
 }
